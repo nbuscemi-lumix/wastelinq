@@ -27,6 +27,14 @@
       .callouts { position: static; width: auto; padding: 16px; }
     }
 
+    /* Blackout periods */
+    .blackouts { position: absolute; left: var(--task-w); right: 0; top: 0; bottom: 0; z-index: 0; pointer-events: none; }
+    .blackout { position: absolute; top: 0; bottom: 0; border-left: 1px solid rgba(11,11,11,0.3); border-right: 1px solid rgba(11,11,11,0.3);
+      background: repeating-linear-gradient(45deg, rgba(11,11,11,0.13) 0 6px, rgba(11,11,11,0.05) 6px 12px); }
+    .legend { display: flex; align-items: center; gap: 8px; margin-top: 10px; font-size: 12px; color: #52514e; }
+    .swatch { width: 22px; height: 12px; border: 1px solid rgba(11,11,11,0.3); border-radius: 2px; flex-shrink: 0;
+      background: repeating-linear-gradient(45deg, rgba(11,11,11,0.25) 0 4px, rgba(11,11,11,0.08) 4px 8px); }
+
     /* Collapsible sections */
     [hidden] { display: none !important; }
     .group-head, .phase-head { cursor: pointer; user-select: none; }
@@ -64,7 +72,7 @@
     .lane { position: relative; z-index: 1; border-bottom: 1px solid #f0efec; min-height: 40px; background: transparent; }
 
     .phase-cell { padding: 10px 16px; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; border-right: 1px solid #e1e0d9; border-bottom: 1px solid #e1e0d9; background: #fcfcfb; }
-    .phase-lane { position: relative; z-index: 1; border-bottom: 1px solid #e1e0d9; background: #fcfcfb; }
+    .phase-lane { position: relative; z-index: 1; border-bottom: 1px solid #e1e0d9; background: rgba(11,11,11,0.025); }
 
     .bar {
       position: absolute; top: 50%; transform: translateY(-50%);
@@ -94,6 +102,10 @@
       .gantt { border-color: #2c2c2a; }
       .callout { background: #262625; border-color: #2c2c2a; border-left-color: #AFCFFF; }
       .group-head:hover, .phase-head:hover { background: rgba(255,255,255,0.05); }
+      .blackout { border-left-color: rgba(255,255,255,0.3); border-right-color: rgba(255,255,255,0.3);
+        background: repeating-linear-gradient(45deg, rgba(255,255,255,0.14) 0 6px, rgba(255,255,255,0.05) 6px 12px); }
+      .legend { color: #b2b1aa; }
+      .swatch { border-color: rgba(255,255,255,0.3); background: repeating-linear-gradient(45deg, rgba(255,255,255,0.3) 0 4px, rgba(255,255,255,0.1) 4px 8px); }
       .controls button { background: #262625; border-color: #2c2c2a; }
       .controls button:hover { background: #2c2c2a; }
       .gantt-head { background: #262625; border-bottom-color: #2c2c2a; }
@@ -105,7 +117,7 @@
       .task-cell { border-right-color: #2c2c2a; border-bottom-color: #262625; }
       .lane { border-bottom-color: #262625; }
       .phase-cell { background: #262625; border-right-color: #2c2c2a; border-bottom-color: #2c2c2a; }
-      .phase-lane { background: #262625; border-bottom-color: #2c2c2a; }
+      .phase-lane { background: rgba(255,255,255,0.04); border-bottom-color: #2c2c2a; }
       .bar { border-color: rgba(255,255,255,0.18); }
       .bar-date { color: #b2b1aa; }
       .task-cell.subtask .task-name { color: #9a9992; }
@@ -121,6 +133,7 @@
           <button type="button" id="collapse-all">Collapse all</button>
           <button type="button" id="expand-all">Expand all</button>
         </div>
+        <div class="legend"><span class="swatch"></span>Team out: Thanksgiving (Nov 25 - Nov 27), Holiday break (Dec 21 - Jan 3)</div>
       </div>
       <!-- LOGO SLOT: <div class="logo-wrap"><img src="data:image/png;base64,..." alt="WasteLinq"></div> -->
     </div>
@@ -266,6 +279,12 @@
           <div class="lane" data-phase="p1"><div class="bar bar-main" style="left: 77.78%; width: 8px; --c: #870632;"><span class="bar-date date-left">Jan 4</span></div></div>
           <div class="task-cell" data-phase="p1"><span class="task-name">Launch ads</span></div>
           <div class="lane" data-phase="p1"><div class="bar bar-main" style="left: 79.37%; width: 8px; --c: #870632;"><span class="bar-date date-left">Jan 5</span></div></div>
+        </div>
+
+        <!-- BLACKOUTS -->
+        <div class="blackouts">
+          <div class="blackout" style="left: 14.29%; width: 4.76%;" title="Thanksgiving: Nov 25 - Nov 27"></div>
+          <div class="blackout" style="left: 55.56%; width: 22.22%;" title="Holiday break: Dec 21 - Jan 3"></div>
         </div>
 
         <!-- CALLOUTS: floats over the empty Dec/Jan space -->
