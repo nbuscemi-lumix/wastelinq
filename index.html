@@ -22,9 +22,23 @@
     /* Callouts (top right) */
     .callouts { position: absolute; top: 56px; right: 16px; width: 340px; z-index: 3; display: flex; flex-direction: column; gap: 12px; }
     .callout { border: 1px solid #e1e0d9; border-left: 4px solid #103F57; border-radius: 6px; background: #fcfcfb; padding: 12px 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+    .callouts.docked { position: static; width: auto; padding: 16px; }
     @media (max-width: 900px) {
       .callouts { position: static; width: auto; padding: 16px; }
     }
+
+    /* Collapsible sections */
+    [hidden] { display: none !important; }
+    .group-head, .phase-head { cursor: pointer; user-select: none; }
+    .group-head .task-name { font-weight: 600; }
+    .group-head:hover, .phase-head:hover { background: rgba(0,0,0,0.03); }
+    .group-head:focus-visible, .phase-head:focus-visible { outline: 2px solid #103F57; outline-offset: -2px; }
+    .caret { display: inline-block; width: 14px; margin-right: 6px; font-size: 11px; color: #888780; flex-shrink: 0; }
+    .caret::before { content: "\25BE"; }
+    .collapsed > .caret::before { content: "\25B8"; }
+    .controls { display: flex; gap: 8px; margin-top: 10px; }
+    .controls button { font: inherit; font-size: 12px; padding: 4px 10px; border: 1px solid #e1e0d9; border-radius: 4px; background: #fcfcfb; color: inherit; cursor: pointer; }
+    .controls button:hover { background: #f0efec; }
     .callout-title { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
     .callout ul { padding-left: 18px; }
     .callout li { font-size: 13px; line-height: 1.4; margin-bottom: 4px; }
@@ -64,6 +78,7 @@
     }
     .date-right { left: calc(100% + 8px); }
     .date-left { right: calc(100% + 8px); text-align: right; }
+    .bar-date.date-inside { right: 8px; color: #0b0b0b; }
 
     .task-cell.subtask { padding-left: 32px; }
     .task-cell.subtask .task-name { color: #6b6b6b; font-weight: 400; font-size: 12px; }
@@ -78,6 +93,9 @@
       body { background: #1a1a19; color: #ffffff; }
       .gantt { border-color: #2c2c2a; }
       .callout { background: #262625; border-color: #2c2c2a; border-left-color: #AFCFFF; }
+      .group-head:hover, .phase-head:hover { background: rgba(255,255,255,0.05); }
+      .controls button { background: #262625; border-color: #2c2c2a; }
+      .controls button:hover { background: #2c2c2a; }
       .gantt-head { background: #262625; border-bottom-color: #2c2c2a; }
       .head-task { border-right-color: #2c2c2a; }
       .month { border-right-color: #2c2c2a; }
@@ -97,7 +115,13 @@
 <body>
   <div class="container">
     <div class="topbar">
-      <h1>WasteLinq Waste Generator Software Launch Timeline</h1>
+      <div>
+        <h1>WasteLinq Waste Generator Software Launch Timeline</h1>
+        <div class="controls">
+          <button type="button" id="collapse-all">Collapse all</button>
+          <button type="button" id="expand-all">Expand all</button>
+        </div>
+      </div>
       <!-- LOGO SLOT: <div class="logo-wrap"><img src="data:image/png;base64,..." alt="WasteLinq"></div> -->
     </div>
 
@@ -140,108 +164,108 @@
         </div>
 
         <div class="rows">
-          <div class="phase-cell">Ramp-up</div><div class="phase-lane"></div>
-          <div class="task-cell"><span class="task-name">Messaging & Audience Segments</span></div>
-          <div class="lane"><div class="bar bar-main" style="left: 6.35%; width: 20.63%; --c: #103F57;"><span class="bar-date date-right">Nov 20 - Dec 2</span></div></div>
-          <div class="task-cell subtask"><span class="task-name">↳ Develop WasteLinq messaging / deck</span></div>
-          <div class="lane"><div class="bar bar-sub" style="left: 6.35%; width: 8px; --c: #103F57;"><span class="bar-date date-right">Nov 20</span></div></div>
-          <div class="task-cell subtask"><span class="task-name">↳ Review messaging deck</span></div>
-          <div class="lane"><div class="bar bar-sub" style="left: 11.11%; width: 8px; --c: #103F57;"><span class="bar-date date-right">Nov 23</span></div></div>
-          <div class="task-cell subtask"><span class="task-name">↳ Proof message deck</span></div>
-          <div class="lane"><div class="bar bar-sub" style="left: 11.11%; width: 8px; --c: #103F57;"><span class="bar-date date-right">Nov 23</span></div></div>
-          <div class="task-cell subtask"><span class="task-name">↳ Present messaging deck to client</span></div>
-          <div class="lane"><div class="bar bar-sub" style="left: 22.22%; width: 8px; --c: #103F57;"><span class="bar-date date-right">Nov 30</span></div></div>
-          <div class="task-cell subtask"><span class="task-name">↳ Messaging approved</span></div>
-          <div class="lane"><div class="bar bar-sub" style="left: 25.40%; width: 8px; --c: #103F57;"><span class="bar-date date-right">Dec 2</span></div></div>
-          <div class="task-cell"><span class="task-name">Campaign Development / Strategy</span></div>
-          <div class="lane"><div class="bar bar-main" style="left: 12.70%; width: 14.29%; --c: #AFCFFF;"><span class="bar-date date-right">Nov 24 - Dec 2</span></div></div>
-          <div class="task-cell subtask"><span class="task-name">↳ Develop campaign strategy</span></div>
-          <div class="lane"><div class="bar bar-sub" style="left: 12.70%; width: 8px; --c: #AFCFFF;"><span class="bar-date date-right">Nov 24</span></div></div>
-          <div class="task-cell subtask"><span class="task-name">↳ Review campaign strategy</span></div>
-          <div class="lane"><div class="bar bar-sub" style="left: 14.29%; width: 8px; --c: #AFCFFF;"><span class="bar-date date-right">Nov 25</span></div></div>
-          <div class="task-cell subtask"><span class="task-name">↳ Proof campaign strategy</span></div>
-          <div class="lane"><div class="bar bar-sub" style="left: 14.29%; width: 8px; --c: #AFCFFF;"><span class="bar-date date-right">Nov 25</span></div></div>
-          <div class="task-cell subtask"><span class="task-name">↳ Share campaign strategy with client</span></div>
-          <div class="lane"><div class="bar bar-sub" style="left: 22.22%; width: 8px; --c: #AFCFFF;"><span class="bar-date date-right">Nov 30</span></div></div>
-          <div class="task-cell subtask"><span class="task-name">↳ Campaign strategy approved</span></div>
-          <div class="lane"><div class="bar bar-sub" style="left: 25.40%; width: 8px; --c: #AFCFFF;"><span class="bar-date date-right">Dec 2</span></div></div>
-          <div class="task-cell"><span class="task-name">Copywriting</span></div>
-          <div class="lane"><div class="bar bar-main" style="left: 25.40%; width: 3.17%; --c: #FFFEC0;"><span class="bar-date date-right">Dec 2 - Dec 3</span></div></div>
-          <div class="task-cell subtask"><span class="task-name">↳ Draft ad copy</span></div>
-          <div class="lane"><div class="bar bar-sub" style="left: 25.40%; width: 8px; --c: #FFFEC0;"><span class="bar-date date-right">Dec 2</span></div></div>
-          <div class="task-cell subtask"><span class="task-name">↳ Review ad copy</span></div>
-          <div class="lane"><div class="bar bar-sub" style="left: 26.98%; width: 8px; --c: #FFFEC0;"><span class="bar-date date-right">Dec 3</span></div></div>
-          <div class="task-cell subtask"><span class="task-name">↳ Proof ad copy</span></div>
-          <div class="lane"><div class="bar bar-sub" style="left: 26.98%; width: 8px; --c: #FFFEC0;"><span class="bar-date date-right">Dec 3</span></div></div>
-          <div class="task-cell"><span class="task-name">Creative Development</span></div>
-          <div class="lane"><div class="bar bar-main" style="left: 25.40%; width: 22.22%; --c: #204B2C;"><span class="bar-date date-right">Dec 2 - Dec 15</span></div></div>
-          <div class="task-cell subtask"><span class="task-name">↳ Draft spec sheet for creative</span></div>
-          <div class="lane"><div class="bar bar-sub" style="left: 25.40%; width: 8px; --c: #204B2C;"><span class="bar-date date-right">Dec 2</span></div></div>
-          <div class="task-cell subtask"><span class="task-name">↳ Send spec sheet to Stuart</span></div>
-          <div class="lane"><div class="bar bar-sub" style="left: 25.40%; width: 8px; --c: #204B2C;"><span class="bar-date date-right">Dec 2</span></div></div>
-          <div class="task-cell subtask"><span class="task-name">↳ Design WasteLinq creative</span></div>
-          <div class="lane"><div class="bar bar-sub" style="left: 34.92%; width: 8px; --c: #204B2C;"><span class="bar-date date-right">Dec 8</span></div></div>
-          <div class="task-cell subtask"><span class="task-name">↳ Internal review: WasteLinq creative</span></div>
-          <div class="lane"><div class="bar bar-sub" style="left: 34.92%; width: 8px; --c: #204B2C;"><span class="bar-date date-right">Dec 8</span></div></div>
-          <div class="task-cell subtask"><span class="task-name">↳ Send creative to client for review</span></div>
-          <div class="lane"><div class="bar bar-sub" style="left: 36.51%; width: 8px; --c: #204B2C;"><span class="bar-date date-right">Dec 9</span></div></div>
-          <div class="task-cell subtask"><span class="task-name">↳ Feedback from client due</span></div>
-          <div class="lane"><div class="bar bar-sub" style="left: 39.68%; width: 8px; --c: #204B2C;"><span class="bar-date date-right">Dec 11</span></div></div>
-          <div class="task-cell subtask"><span class="task-name">↳ Make edits to creative (if needed)</span></div>
-          <div class="lane"><div class="bar bar-sub" style="left: 44.44%; width: 8px; --c: #204B2C;"><span class="bar-date date-right">Dec 14</span></div></div>
-          <div class="task-cell subtask"><span class="task-name">↳ Finalize creative</span></div>
-          <div class="lane"><div class="bar bar-sub" style="left: 46.03%; width: 8px; --c: #204B2C;"><span class="bar-date date-right">Dec 15</span></div></div>
-          <div class="task-cell"><span class="task-name">Landing Page Development</span></div>
-          <div class="lane"><div class="bar bar-main" style="left: 28.57%; width: 23.81%; --c: #870632;"><span class="bar-date date-right">Dec 4 - Dec 18</span></div></div>
-          <div class="task-cell subtask"><span class="task-name">↳ Draft landing page copy</span></div>
-          <div class="lane"><div class="bar bar-sub" style="left: 28.57%; width: 8px; --c: #870632;"><span class="bar-date date-right">Dec 4</span></div></div>
-          <div class="task-cell subtask"><span class="task-name">↳ Review landing page copy</span></div>
-          <div class="lane"><div class="bar bar-sub" style="left: 33.33%; width: 8px; --c: #870632;"><span class="bar-date date-right">Dec 7</span></div></div>
-          <div class="task-cell subtask"><span class="task-name">↳ Build landing page</span></div>
-          <div class="lane"><div class="bar bar-sub" style="left: 33.33%; width: 7.94%; --c: #870632;"><span class="bar-date date-right">Dec 7 - Dec 11</span></div></div>
-          <div class="task-cell subtask"><span class="task-name">↳ Send landing page to client for review</span></div>
-          <div class="lane"><div class="bar bar-sub" style="left: 44.44%; width: 8px; --c: #870632;"><span class="bar-date date-right">Dec 14</span></div></div>
-          <div class="task-cell subtask"><span class="task-name">↳ Client edits due</span></div>
-          <div class="lane"><div class="bar bar-sub" style="left: 47.62%; width: 8px; --c: #870632;"><span class="bar-date date-right">Dec 16</span></div></div>
-          <div class="task-cell subtask"><span class="task-name">↳ Make client edits to landing page</span></div>
-          <div class="lane"><div class="bar bar-sub" style="left: 49.21%; width: 8px; --c: #870632;"><span class="bar-date date-right">Dec 17</span></div></div>
-          <div class="task-cell subtask"><span class="task-name">↳ Landing page approved</span></div>
-          <div class="lane"><div class="bar bar-sub" style="left: 50.79%; width: 8px; --c: #870632;"><span class="bar-date date-right">Dec 18</span></div></div>
-          <div class="task-cell"><span class="task-name">Email Campaign</span></div>
-          <div class="lane"><div class="bar bar-main" style="left: 6.35%; width: 90.48%; --c: #c46a86;"><span class="bar-date date-right">Nov 20 - Jan 15</span></div></div>
-          <div class="task-cell subtask"><span class="task-name">↳ Develop email strategy (cadence, process, etc.)</span></div>
-          <div class="lane"><div class="bar bar-sub" style="left: 6.35%; width: 8px; --c: #c46a86;"><span class="bar-date date-right">Nov 20</span></div></div>
-          <div class="task-cell subtask"><span class="task-name">↳ Review email strategy</span></div>
-          <div class="lane"><div class="bar bar-sub" style="left: 11.11%; width: 8px; --c: #c46a86;"><span class="bar-date date-right">Nov 23</span></div></div>
-          <div class="task-cell subtask"><span class="task-name">↳ Proof email strategy</span></div>
-          <div class="lane"><div class="bar bar-sub" style="left: 11.11%; width: 8px; --c: #c46a86;"><span class="bar-date date-right">Nov 23</span></div></div>
-          <div class="task-cell subtask"><span class="task-name">↳ Send email strategy to client</span></div>
-          <div class="lane"><div class="bar bar-sub" style="left: 12.70%; width: 8px; --c: #c46a86;"><span class="bar-date date-right">Nov 24</span></div></div>
-          <div class="task-cell subtask"><span class="task-name">↳ Draft email #1 copy</span></div>
-          <div class="lane"><div class="bar bar-sub" style="left: 33.33%; width: 8px; --c: #c46a86;"><span class="bar-date date-right">Dec 7</span></div></div>
-          <div class="task-cell subtask"><span class="task-name">↳ Build email #1</span></div>
-          <div class="lane"><div class="bar bar-sub" style="left: 34.92%; width: 8px; --c: #c46a86;"><span class="bar-date date-right">Dec 8</span></div></div>
-          <div class="task-cell subtask"><span class="task-name">↳ Send email to client for review</span></div>
-          <div class="lane"><div class="bar bar-sub" style="left: 38.10%; width: 8px; --c: #c46a86;"><span class="bar-date date-right">Dec 10</span></div></div>
-          <div class="task-cell subtask"><span class="task-name">↳ Make client edits to email</span></div>
-          <div class="lane"><div class="bar bar-sub" style="left: 44.44%; width: 8px; --c: #c46a86;"><span class="bar-date date-right">Dec 14</span></div></div>
-          <div class="task-cell subtask"><span class="task-name">↳ Email 1 finalized</span></div>
-          <div class="lane"><div class="bar bar-sub" style="left: 50.79%; width: 8px; --c: #c46a86;"><span class="bar-date date-right">Dec 18</span></div></div>
-          <div class="task-cell subtask"><span class="task-name">↳ Draft second email copy</span></div>
-          <div class="lane"><div class="bar bar-sub" style="left: 55.56%; width: 8px; --c: #c46a86;"><span class="bar-date date-right">Dec 21</span></div></div>
-          <div class="task-cell subtask"><span class="task-name">↳ Build second email</span></div>
-          <div class="lane"><div class="bar bar-sub" style="left: 57.14%; width: 8px; --c: #c46a86;"><span class="bar-date date-right">Dec 22</span></div></div>
-          <div class="task-cell subtask"><span class="task-name">↳ Send email 2 to the client for review</span></div>
-          <div class="lane"><div class="bar bar-sub" style="left: 88.89%; width: 8px; --c: #c46a86;"><span class="bar-date date-left">Jan 11</span></div></div>
-          <div class="task-cell subtask"><span class="task-name">↳ Make client edits to email 2</span></div>
-          <div class="lane"><div class="bar bar-sub" style="left: 92.06%; width: 8px; --c: #c46a86;"><span class="bar-date date-left">Jan 13</span></div></div>
-          <div class="task-cell subtask"><span class="task-name">↳ Email 2 finalized</span></div>
-          <div class="lane"><div class="bar bar-sub" style="left: 95.24%; width: 8px; --c: #c46a86;"><span class="bar-date date-left">Jan 15</span></div></div>
-          <div class="phase-cell">Launch</div><div class="phase-lane"></div>
-          <div class="task-cell"><span class="task-name">Launch landing page</span></div>
-          <div class="lane"><div class="bar bar-main" style="left: 77.78%; width: 8px; --c: #870632;"><span class="bar-date date-left">Jan 4</span></div></div>
-          <div class="task-cell"><span class="task-name">Launch ads</span></div>
-          <div class="lane"><div class="bar bar-main" style="left: 79.37%; width: 8px; --c: #870632;"><span class="bar-date date-left">Jan 5</span></div></div>
+          <div class="phase-cell phase-head" data-phase="p0" role="button" tabindex="0" aria-expanded="true"><span class="caret"></span>Ramp-up</div><div class="phase-lane" data-phase="p0"></div>
+          <div class="task-cell group-head" data-phase="p0" data-group="g0" role="button" tabindex="0" aria-expanded="true"><span class="caret"></span><span class="task-name">Messaging & Audience Segments</span></div>
+          <div class="lane" data-phase="p0"><div class="bar bar-main" style="left: 6.35%; width: 20.63%; --c: #103F57;"><span class="bar-date date-right">Nov 20 - Dec 2</span></div></div>
+          <div class="task-cell subtask" data-phase="p0" data-g="g0"><span class="task-name">↳ Develop WasteLinq messaging / deck</span></div>
+          <div class="lane" data-phase="p0" data-g="g0"><div class="bar bar-sub" style="left: 6.35%; width: 8px; --c: #103F57;"><span class="bar-date date-right">Nov 20</span></div></div>
+          <div class="task-cell subtask" data-phase="p0" data-g="g0"><span class="task-name">↳ Review messaging deck</span></div>
+          <div class="lane" data-phase="p0" data-g="g0"><div class="bar bar-sub" style="left: 11.11%; width: 8px; --c: #103F57;"><span class="bar-date date-right">Nov 23</span></div></div>
+          <div class="task-cell subtask" data-phase="p0" data-g="g0"><span class="task-name">↳ Proof message deck</span></div>
+          <div class="lane" data-phase="p0" data-g="g0"><div class="bar bar-sub" style="left: 11.11%; width: 8px; --c: #103F57;"><span class="bar-date date-right">Nov 23</span></div></div>
+          <div class="task-cell subtask" data-phase="p0" data-g="g0"><span class="task-name">↳ Present messaging deck to client</span></div>
+          <div class="lane" data-phase="p0" data-g="g0"><div class="bar bar-sub" style="left: 22.22%; width: 8px; --c: #103F57;"><span class="bar-date date-right">Nov 30</span></div></div>
+          <div class="task-cell subtask" data-phase="p0" data-g="g0"><span class="task-name">↳ Messaging approved</span></div>
+          <div class="lane" data-phase="p0" data-g="g0"><div class="bar bar-sub" style="left: 25.40%; width: 8px; --c: #103F57;"><span class="bar-date date-right">Dec 2</span></div></div>
+          <div class="task-cell group-head" data-phase="p0" data-group="g1" role="button" tabindex="0" aria-expanded="true"><span class="caret"></span><span class="task-name">Campaign Development / Strategy</span></div>
+          <div class="lane" data-phase="p0"><div class="bar bar-main" style="left: 12.70%; width: 14.29%; --c: #AFCFFF;"><span class="bar-date date-right">Nov 24 - Dec 2</span></div></div>
+          <div class="task-cell subtask" data-phase="p0" data-g="g1"><span class="task-name">↳ Develop campaign strategy</span></div>
+          <div class="lane" data-phase="p0" data-g="g1"><div class="bar bar-sub" style="left: 12.70%; width: 8px; --c: #AFCFFF;"><span class="bar-date date-right">Nov 24</span></div></div>
+          <div class="task-cell subtask" data-phase="p0" data-g="g1"><span class="task-name">↳ Review campaign strategy</span></div>
+          <div class="lane" data-phase="p0" data-g="g1"><div class="bar bar-sub" style="left: 14.29%; width: 8px; --c: #AFCFFF;"><span class="bar-date date-right">Nov 25</span></div></div>
+          <div class="task-cell subtask" data-phase="p0" data-g="g1"><span class="task-name">↳ Proof campaign strategy</span></div>
+          <div class="lane" data-phase="p0" data-g="g1"><div class="bar bar-sub" style="left: 14.29%; width: 8px; --c: #AFCFFF;"><span class="bar-date date-right">Nov 25</span></div></div>
+          <div class="task-cell subtask" data-phase="p0" data-g="g1"><span class="task-name">↳ Share campaign strategy with client</span></div>
+          <div class="lane" data-phase="p0" data-g="g1"><div class="bar bar-sub" style="left: 22.22%; width: 8px; --c: #AFCFFF;"><span class="bar-date date-right">Nov 30</span></div></div>
+          <div class="task-cell subtask" data-phase="p0" data-g="g1"><span class="task-name">↳ Campaign strategy approved</span></div>
+          <div class="lane" data-phase="p0" data-g="g1"><div class="bar bar-sub" style="left: 25.40%; width: 8px; --c: #AFCFFF;"><span class="bar-date date-right">Dec 2</span></div></div>
+          <div class="task-cell group-head" data-phase="p0" data-group="g2" role="button" tabindex="0" aria-expanded="true"><span class="caret"></span><span class="task-name">Copywriting</span></div>
+          <div class="lane" data-phase="p0"><div class="bar bar-main" style="left: 25.40%; width: 3.17%; --c: #FFFEC0;"><span class="bar-date date-right">Dec 2 - Dec 3</span></div></div>
+          <div class="task-cell subtask" data-phase="p0" data-g="g2"><span class="task-name">↳ Draft ad copy</span></div>
+          <div class="lane" data-phase="p0" data-g="g2"><div class="bar bar-sub" style="left: 25.40%; width: 8px; --c: #FFFEC0;"><span class="bar-date date-right">Dec 2</span></div></div>
+          <div class="task-cell subtask" data-phase="p0" data-g="g2"><span class="task-name">↳ Review ad copy</span></div>
+          <div class="lane" data-phase="p0" data-g="g2"><div class="bar bar-sub" style="left: 26.98%; width: 8px; --c: #FFFEC0;"><span class="bar-date date-right">Dec 3</span></div></div>
+          <div class="task-cell subtask" data-phase="p0" data-g="g2"><span class="task-name">↳ Proof ad copy</span></div>
+          <div class="lane" data-phase="p0" data-g="g2"><div class="bar bar-sub" style="left: 26.98%; width: 8px; --c: #FFFEC0;"><span class="bar-date date-right">Dec 3</span></div></div>
+          <div class="task-cell group-head" data-phase="p0" data-group="g3" role="button" tabindex="0" aria-expanded="true"><span class="caret"></span><span class="task-name">Creative Development</span></div>
+          <div class="lane" data-phase="p0"><div class="bar bar-main" style="left: 25.40%; width: 22.22%; --c: #204B2C;"><span class="bar-date date-right">Dec 2 - Dec 15</span></div></div>
+          <div class="task-cell subtask" data-phase="p0" data-g="g3"><span class="task-name">↳ Draft spec sheet for creative</span></div>
+          <div class="lane" data-phase="p0" data-g="g3"><div class="bar bar-sub" style="left: 25.40%; width: 8px; --c: #204B2C;"><span class="bar-date date-right">Dec 2</span></div></div>
+          <div class="task-cell subtask" data-phase="p0" data-g="g3"><span class="task-name">↳ Send spec sheet to Stuart</span></div>
+          <div class="lane" data-phase="p0" data-g="g3"><div class="bar bar-sub" style="left: 25.40%; width: 8px; --c: #204B2C;"><span class="bar-date date-right">Dec 2</span></div></div>
+          <div class="task-cell subtask" data-phase="p0" data-g="g3"><span class="task-name">↳ Design WasteLinq creative</span></div>
+          <div class="lane" data-phase="p0" data-g="g3"><div class="bar bar-sub" style="left: 34.92%; width: 8px; --c: #204B2C;"><span class="bar-date date-right">Dec 8</span></div></div>
+          <div class="task-cell subtask" data-phase="p0" data-g="g3"><span class="task-name">↳ Internal review: WasteLinq creative</span></div>
+          <div class="lane" data-phase="p0" data-g="g3"><div class="bar bar-sub" style="left: 34.92%; width: 8px; --c: #204B2C;"><span class="bar-date date-right">Dec 8</span></div></div>
+          <div class="task-cell subtask" data-phase="p0" data-g="g3"><span class="task-name">↳ Send creative to client for review</span></div>
+          <div class="lane" data-phase="p0" data-g="g3"><div class="bar bar-sub" style="left: 36.51%; width: 8px; --c: #204B2C;"><span class="bar-date date-right">Dec 9</span></div></div>
+          <div class="task-cell subtask" data-phase="p0" data-g="g3"><span class="task-name">↳ Feedback from client due</span></div>
+          <div class="lane" data-phase="p0" data-g="g3"><div class="bar bar-sub" style="left: 39.68%; width: 8px; --c: #204B2C;"><span class="bar-date date-right">Dec 11</span></div></div>
+          <div class="task-cell subtask" data-phase="p0" data-g="g3"><span class="task-name">↳ Make edits to creative (if needed)</span></div>
+          <div class="lane" data-phase="p0" data-g="g3"><div class="bar bar-sub" style="left: 44.44%; width: 8px; --c: #204B2C;"><span class="bar-date date-right">Dec 14</span></div></div>
+          <div class="task-cell subtask" data-phase="p0" data-g="g3"><span class="task-name">↳ Finalize creative</span></div>
+          <div class="lane" data-phase="p0" data-g="g3"><div class="bar bar-sub" style="left: 46.03%; width: 8px; --c: #204B2C;"><span class="bar-date date-right">Dec 15</span></div></div>
+          <div class="task-cell group-head" data-phase="p0" data-group="g4" role="button" tabindex="0" aria-expanded="true"><span class="caret"></span><span class="task-name">Landing Page Development</span></div>
+          <div class="lane" data-phase="p0"><div class="bar bar-main" style="left: 28.57%; width: 23.81%; --c: #870632;"><span class="bar-date date-right">Dec 4 - Dec 18</span></div></div>
+          <div class="task-cell subtask" data-phase="p0" data-g="g4"><span class="task-name">↳ Draft landing page copy</span></div>
+          <div class="lane" data-phase="p0" data-g="g4"><div class="bar bar-sub" style="left: 28.57%; width: 8px; --c: #870632;"><span class="bar-date date-right">Dec 4</span></div></div>
+          <div class="task-cell subtask" data-phase="p0" data-g="g4"><span class="task-name">↳ Review landing page copy</span></div>
+          <div class="lane" data-phase="p0" data-g="g4"><div class="bar bar-sub" style="left: 33.33%; width: 8px; --c: #870632;"><span class="bar-date date-right">Dec 7</span></div></div>
+          <div class="task-cell subtask" data-phase="p0" data-g="g4"><span class="task-name">↳ Build landing page</span></div>
+          <div class="lane" data-phase="p0" data-g="g4"><div class="bar bar-sub" style="left: 33.33%; width: 7.94%; --c: #870632;"><span class="bar-date date-right">Dec 7 - Dec 11</span></div></div>
+          <div class="task-cell subtask" data-phase="p0" data-g="g4"><span class="task-name">↳ Send landing page to client for review</span></div>
+          <div class="lane" data-phase="p0" data-g="g4"><div class="bar bar-sub" style="left: 44.44%; width: 8px; --c: #870632;"><span class="bar-date date-right">Dec 14</span></div></div>
+          <div class="task-cell subtask" data-phase="p0" data-g="g4"><span class="task-name">↳ Client edits due</span></div>
+          <div class="lane" data-phase="p0" data-g="g4"><div class="bar bar-sub" style="left: 47.62%; width: 8px; --c: #870632;"><span class="bar-date date-right">Dec 16</span></div></div>
+          <div class="task-cell subtask" data-phase="p0" data-g="g4"><span class="task-name">↳ Make client edits to landing page</span></div>
+          <div class="lane" data-phase="p0" data-g="g4"><div class="bar bar-sub" style="left: 49.21%; width: 8px; --c: #870632;"><span class="bar-date date-right">Dec 17</span></div></div>
+          <div class="task-cell subtask" data-phase="p0" data-g="g4"><span class="task-name">↳ Landing page approved</span></div>
+          <div class="lane" data-phase="p0" data-g="g4"><div class="bar bar-sub" style="left: 50.79%; width: 8px; --c: #870632;"><span class="bar-date date-right">Dec 18</span></div></div>
+          <div class="task-cell group-head" data-phase="p0" data-group="g5" role="button" tabindex="0" aria-expanded="true"><span class="caret"></span><span class="task-name">Email Campaign</span></div>
+          <div class="lane" data-phase="p0"><div class="bar bar-main" style="left: 6.35%; width: 90.48%; --c: #c46a86;"><span class="bar-date date-inside">Nov 20 - Jan 15</span></div></div>
+          <div class="task-cell subtask" data-phase="p0" data-g="g5"><span class="task-name">↳ Develop email strategy (cadence, process, etc.)</span></div>
+          <div class="lane" data-phase="p0" data-g="g5"><div class="bar bar-sub" style="left: 6.35%; width: 8px; --c: #c46a86;"><span class="bar-date date-right">Nov 20</span></div></div>
+          <div class="task-cell subtask" data-phase="p0" data-g="g5"><span class="task-name">↳ Review email strategy</span></div>
+          <div class="lane" data-phase="p0" data-g="g5"><div class="bar bar-sub" style="left: 11.11%; width: 8px; --c: #c46a86;"><span class="bar-date date-right">Nov 23</span></div></div>
+          <div class="task-cell subtask" data-phase="p0" data-g="g5"><span class="task-name">↳ Proof email strategy</span></div>
+          <div class="lane" data-phase="p0" data-g="g5"><div class="bar bar-sub" style="left: 11.11%; width: 8px; --c: #c46a86;"><span class="bar-date date-right">Nov 23</span></div></div>
+          <div class="task-cell subtask" data-phase="p0" data-g="g5"><span class="task-name">↳ Send email strategy to client</span></div>
+          <div class="lane" data-phase="p0" data-g="g5"><div class="bar bar-sub" style="left: 12.70%; width: 8px; --c: #c46a86;"><span class="bar-date date-right">Nov 24</span></div></div>
+          <div class="task-cell subtask" data-phase="p0" data-g="g5"><span class="task-name">↳ Draft email #1 copy</span></div>
+          <div class="lane" data-phase="p0" data-g="g5"><div class="bar bar-sub" style="left: 33.33%; width: 8px; --c: #c46a86;"><span class="bar-date date-right">Dec 7</span></div></div>
+          <div class="task-cell subtask" data-phase="p0" data-g="g5"><span class="task-name">↳ Build email #1</span></div>
+          <div class="lane" data-phase="p0" data-g="g5"><div class="bar bar-sub" style="left: 34.92%; width: 8px; --c: #c46a86;"><span class="bar-date date-right">Dec 8</span></div></div>
+          <div class="task-cell subtask" data-phase="p0" data-g="g5"><span class="task-name">↳ Send email to client for review</span></div>
+          <div class="lane" data-phase="p0" data-g="g5"><div class="bar bar-sub" style="left: 38.10%; width: 8px; --c: #c46a86;"><span class="bar-date date-right">Dec 10</span></div></div>
+          <div class="task-cell subtask" data-phase="p0" data-g="g5"><span class="task-name">↳ Make client edits to email</span></div>
+          <div class="lane" data-phase="p0" data-g="g5"><div class="bar bar-sub" style="left: 44.44%; width: 8px; --c: #c46a86;"><span class="bar-date date-right">Dec 14</span></div></div>
+          <div class="task-cell subtask" data-phase="p0" data-g="g5"><span class="task-name">↳ Email 1 finalized</span></div>
+          <div class="lane" data-phase="p0" data-g="g5"><div class="bar bar-sub" style="left: 50.79%; width: 8px; --c: #c46a86;"><span class="bar-date date-right">Dec 18</span></div></div>
+          <div class="task-cell subtask" data-phase="p0" data-g="g5"><span class="task-name">↳ Draft second email copy</span></div>
+          <div class="lane" data-phase="p0" data-g="g5"><div class="bar bar-sub" style="left: 55.56%; width: 8px; --c: #c46a86;"><span class="bar-date date-right">Dec 21</span></div></div>
+          <div class="task-cell subtask" data-phase="p0" data-g="g5"><span class="task-name">↳ Build second email</span></div>
+          <div class="lane" data-phase="p0" data-g="g5"><div class="bar bar-sub" style="left: 57.14%; width: 8px; --c: #c46a86;"><span class="bar-date date-right">Dec 22</span></div></div>
+          <div class="task-cell subtask" data-phase="p0" data-g="g5"><span class="task-name">↳ Send email 2 to the client for review</span></div>
+          <div class="lane" data-phase="p0" data-g="g5"><div class="bar bar-sub" style="left: 88.89%; width: 8px; --c: #c46a86;"><span class="bar-date date-left">Jan 11</span></div></div>
+          <div class="task-cell subtask" data-phase="p0" data-g="g5"><span class="task-name">↳ Make client edits to email 2</span></div>
+          <div class="lane" data-phase="p0" data-g="g5"><div class="bar bar-sub" style="left: 92.06%; width: 8px; --c: #c46a86;"><span class="bar-date date-left">Jan 13</span></div></div>
+          <div class="task-cell subtask" data-phase="p0" data-g="g5"><span class="task-name">↳ Email 2 finalized</span></div>
+          <div class="lane" data-phase="p0" data-g="g5"><div class="bar bar-sub" style="left: 95.24%; width: 8px; --c: #c46a86;"><span class="bar-date date-left">Jan 15</span></div></div>
+          <div class="phase-cell phase-head" data-phase="p1" role="button" tabindex="0" aria-expanded="true"><span class="caret"></span>Launch</div><div class="phase-lane" data-phase="p1"></div>
+          <div class="task-cell" data-phase="p1"><span class="task-name">Launch landing page</span></div>
+          <div class="lane" data-phase="p1"><div class="bar bar-main" style="left: 77.78%; width: 8px; --c: #870632;"><span class="bar-date date-left">Jan 4</span></div></div>
+          <div class="task-cell" data-phase="p1"><span class="task-name">Launch ads</span></div>
+          <div class="lane" data-phase="p1"><div class="bar bar-main" style="left: 79.37%; width: 8px; --c: #870632;"><span class="bar-date date-left">Jan 5</span></div></div>
         </div>
 
         <!-- CALLOUTS: floats over the empty Dec/Jan space -->
@@ -268,6 +292,77 @@
         line.style.left = pct + '%';
         gridlines.appendChild(line);
       }
+    })();
+
+    // Collapsible phases and groups
+    (function () {
+      var body = document.getElementById('gantt-body');
+      var callouts = document.querySelector('.callouts');
+      var collapsedPhases = {};
+      var collapsedGroups = {};
+
+      function dockCallouts() {
+        if (!callouts) return;
+        callouts.classList.remove('docked');
+        var c = callouts.getBoundingClientRect();
+        var hit = false;
+        body.querySelectorAll('.bar, .bar-date').forEach(function (el) {
+          if (!el.getClientRects().length) return;
+          var r = el.getBoundingClientRect();
+          if (r.right > c.left && r.left < c.right && r.bottom > c.top && r.top < c.bottom) hit = true;
+        });
+        if (hit) callouts.classList.add('docked');
+      }
+
+      function render() {
+        body.querySelectorAll('[data-phase]').forEach(function (el) {
+          var isPhaseRow = el.classList.contains('phase-cell') || el.classList.contains('phase-lane');
+          var hide = (!isPhaseRow && collapsedPhases[el.dataset.phase]) ||
+                     (el.dataset.g && collapsedGroups[el.dataset.g]);
+          el.hidden = !!hide;
+        });
+        body.querySelectorAll('.phase-head').forEach(function (el) {
+          var on = !!collapsedPhases[el.dataset.phase];
+          el.classList.toggle('collapsed', on);
+          el.setAttribute('aria-expanded', String(!on));
+        });
+        body.querySelectorAll('.group-head').forEach(function (el) {
+          var on = !!collapsedGroups[el.dataset.group];
+          el.classList.toggle('collapsed', on);
+          el.setAttribute('aria-expanded', String(!on));
+        });
+        dockCallouts();
+      }
+
+      function toggle(el) {
+        if (el.classList.contains('phase-head')) {
+          collapsedPhases[el.dataset.phase] = !collapsedPhases[el.dataset.phase];
+        } else if (el.classList.contains('group-head')) {
+          collapsedGroups[el.dataset.group] = !collapsedGroups[el.dataset.group];
+        } else return;
+        render();
+      }
+
+      body.addEventListener('click', function (e) {
+        var el = e.target.closest('.phase-head, .group-head');
+        if (el) toggle(el);
+      });
+      body.addEventListener('keydown', function (e) {
+        if (e.key !== 'Enter' && e.key !== ' ') return;
+        var el = e.target.closest('.phase-head, .group-head');
+        if (el) { e.preventDefault(); toggle(el); }
+      });
+
+      document.getElementById('collapse-all').addEventListener('click', function () {
+        body.querySelectorAll('.group-head').forEach(function (el) { collapsedGroups[el.dataset.group] = true; });
+        render();
+      });
+      document.getElementById('expand-all').addEventListener('click', function () {
+        collapsedPhases = {}; collapsedGroups = {};
+        render();
+      });
+      window.addEventListener('resize', dockCallouts);
+      render();
     })();
   </script>
 </body>
